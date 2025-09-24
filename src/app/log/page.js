@@ -32,12 +32,12 @@ export default function Journal() {
     await db.days.put({
       // date: today,
       date: randomDate,
-      perceivedLength: perceivedLength,
-      uniquePlaces: uniquePlaces ?? 0,
-      newPeople: newPeople ?? 0,
-      photoBursts: photoBursts ?? 0,
-      taskSwitches: taskSwitches ?? 0,
-      // mood: mood ?? '',
+      perceivedLength: parseInt(perceivedLength),
+      uniquePlaces: parseInt(uniquePlaces) ?? 0,
+      newPeople: parseInt(newPeople) ?? 0,
+      photoBursts: parseInt(photoBursts) ?? 0,
+      taskSwitches: parseInt(taskSwitches) ?? 0,
+      // emotionMood: emotionMood ?? '',
       // notes: notes ?? ''
     });
 
@@ -65,12 +65,11 @@ export default function Journal() {
             type="range"
             value={perceivedLength}
             onChange={(e) => setPerceivedLength(e.target.value)}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 accent-[#4B6858]"
             id="default-range"
           />
           <p className="text-center">{sliderLabel}</p>
         </div>
-        <p>Perceived Length: {perceivedLength}</p>
         <div className="mt-6">
           <h1 className="text-lg font-semibold mb-4">Mood & Novelty</h1>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -138,8 +137,8 @@ export default function Journal() {
           <p>Today felt like a {sliderLabel.toLowerCase()}.</p>
           <p>I visited {uniquePlaces} unique places, encountered {newPeople} new people or topics, took {photoBursts} photo bursts, switched tasks approximately {taskSwitches} times, and rated my emotional mood as {emotionMood} out of 5.</p>
           <div className="flex gap-4">
-            <button onClick={handleSubmit} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Save Entry</button>
-            <button onClick={handleDelete} className="mt-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">Delete Entry</button>
+            <button onClick={handleSubmit} className="mt-4 px-4 py-2 bg-[#78A78D] text-white rounded-lg hover:bg-[#2a8e55]">Save Entry</button>
+            <button onClick={handleDelete} className="mt-4 px-4 py-2 bg-[#E56B6F] text-white rounded-lg hover:bg-[#DD3C41]">Delete Entry</button>
           </div>
         </div>
       </div>

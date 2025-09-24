@@ -22,6 +22,7 @@ const Navbar = () => (
       <li><a href="/" style={{ color: '#fff', textDecoration: 'none' }}>Home</a></li>
       <li><a href="/log" style={{ color: '#fff', textDecoration: 'none' }}>Journal</a></li>
       <li><a href="/insights" style={{ color: '#fff', textDecoration: 'none' }}>Insights</a></li>
+      <li><a href='/about' style={{ color: '#fff', textDecoration: 'none' }}>About</a></li>
     </ul>
   </nav>
 );
