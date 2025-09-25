@@ -1,3 +1,4 @@
+import { Link } from 'next-view-transitions';
 import React from 'react';
 
 const Navbar = () => (
@@ -10,7 +11,7 @@ const Navbar = () => (
     color: '#fff'
   }}>
     <div style={{ fontSize: '1.4rem' }}>
-      mnemo
+      <Link href="/">mnemo</Link>
     </div>
     <ul style={{
       display: 'flex',
@@ -19,10 +20,10 @@ const Navbar = () => (
       padding: 0,
       gap: '2rem'
     }}>
-      <li><a href="/" style={{ color: '#fff', textDecoration: 'none' }}>Home</a></li>
-      <li><a href="/log" style={{ color: '#fff', textDecoration: 'none' }}>Journal</a></li>
-      <li><a href="/insights" style={{ color: '#fff', textDecoration: 'none' }}>Insights</a></li>
-      <li><a href='/about' style={{ color: '#fff', textDecoration: 'none' }}>About</a></li>
+      <li><Link href="/" style={{ color: '#fff', textDecoration: 'none' }}>Home</Link></li>
+      <li><Link href="/log" style={{ color: '#fff', textDecoration: 'none' }}>Journal</Link></li>
+      <li><Link href="/insights" style={{ color: '#fff', textDecoration: 'none' }}>Insights</Link></li>
+      <li><Link href='/about' style={{ color: '#fff', textDecoration: 'none' }}>About</Link></li>
     </ul>
   </nav>
 );

@@ -1,5 +1,8 @@
 import Navbar from './components/layout/navbar';
 import './globals.css';
+import FlowbiteSetup from './components/FlowbiteSetup';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { ViewTransitions } from 'next-view-transitions';
 
 export const viewport = {
   title: 'My Next.js PWA',
@@ -14,13 +17,18 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body>
-        <Navbar />
-        <div className='container m-10'>
-          {children}
-        </div>
-      </body>
-    </html>
+    <ViewTransitions>
+      <html lang="en">
+        <body>
+          <Navbar />
+          <div className='container m-10'>
+            <TooltipProvider>
+              {children}
+            </TooltipProvider>
+          </div>
+          <FlowbiteSetup />
+        </body>
+      </html>
+    </ViewTransitions>
   );
 }

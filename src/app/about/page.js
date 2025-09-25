@@ -1,11 +1,12 @@
 'use client';
-import Link from "next/link";
+
+import { Link } from "next-view-transitions";
 
 export default function About() {
   return (
     <main className="min-h-screen py-12">
       <div className="max-w-5xl mx-auto p-8 bg-white rounded-lg shadow-lg">
-        <h1 className="text-5xl font-extrabold text-center text-[#4B6858] mb-10">About Mnemo</h1>
+        <h1 className="text-5xl font-extrabold text-center text-[#4B6858] mb-10">About nnemo</h1>
         
         <div className="prose prose-lg prose-blue text-gray-700">
           <p className="lead text-xl text-gray-800 mb-8">
