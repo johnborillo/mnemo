@@ -6,10 +6,12 @@ import { Link } from "next-view-transitions";
 import { useJournal } from "./contexts/JournalContext";
 import { getJournalEntry } from "./utils/getJournalEntry";
 import { processDataForInsights } from "./utils/stats";
+import WelcomeModal from "./components/WelcomeModal";
 
 export default function Home() {
   const { data, hasLoggedToday, todayData, dayLengthText, loading } = useJournal();
   const [insightsData, setInsightsData] = useState(null);
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -18,14 +20,30 @@ export default function Home() {
       if (days.length > 0) {
         const insights = processDataForInsights(days);
         setInsightsData(insights);
-        console.log(insights);
       }
     }
     fetchData();
   }, []);
 
+  useEffect(() => {
+    // Check if user has completed onboarding
+    const onboardingComplete = localStorage.getItem('onboardingComplete');
+    if (!onboardingComplete) {
+      setShowWelcomeModal(true);
+    }
+  }, []);
+
+  const handleOnboardingComplete = () => {
+    setShowWelcomeModal(false);
+  };
+
   return (
-    <div className="pl-15 pr-15">
+    <>
+      <WelcomeModal 
+        isOpen={showWelcomeModal} 
+        onComplete={handleOnboardingComplete}
+      />
+      <div className="pl-15 pr-15">
       <h1 className="mb-4 text-lg font-extrabold">Today's Status</h1>
       <div
         className="mb-4 bg-cover flex flex-col items-stretch justify-end rounded-xl pt-[132px]"
@@ -103,16 +121,21 @@ export default function Home() {
             <div className="flex w-full text-center justify-center gap-4 p-4">
               <div className="flex max-w-[440px] flex-1 flex-col gap-1">
                 <p className="text-black mb-2 tracking-light text-2xl font-bold leading-tight max-w-[440px]">
-                  This week, novelty {insightsData?.weeklyStats?.weeklyNoveltyImpact < 0 ? `subtrated ${insightsData?.weeklyStats?.weeklyNoveltyImpact.toFixed(2)}` : `added ${insightsData?.weeklyStats?.weeklyNoveltyImpact.toFixed(2)}`} to your days' perceived length.
+                  {insightsData?.enriched?.length > 7 ?
+                    <div>
+                      <p className="mb-1">This week, novelty {insightsData?.weeklyStats?.weeklyNoveltyImpact < 0 ? `subtracted ${insightsData?.weeklyStats?.weeklyNoveltyImpact.toFixed(2)}` : `added ${insightsData?.weeklyStats?.weeklyNoveltyImpact.toFixed(2)}`} to your days' perceived length.</p>
+                      <Link
+                        href="/insights"
+                        className="inline-flex text-[#68907a] font-semibold transition-all duration-300 transform hover:scale-105"
+                      >
+                        <p className="text-md">See full insights →</p>
+                      </Link>
+                    </div>
+                    :
+                    <p className="text-md">Log at least 7 entries to get personalized weekly insights and discover trends in your days.</p>
+                  }
                 </p>
-                <div>
-                  <Link
-                    href="/insights"
-                    className="inline-flex text-[#68907a] font-semibold transition-all duration-300 transform hover:scale-105"
-                  >
-                    See full insights →
-                  </Link>
-                </div>
+
               </div>
             </div>
           )}
@@ -122,5 +145,6 @@ export default function Home() {
         </div>
       </div>
     </div>
+    </>
   );
 }
