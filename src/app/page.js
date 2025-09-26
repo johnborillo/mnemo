@@ -1,37 +1,28 @@
 'use client'
-
-import Link from "next/link";
-import { getJournalEntry } from "./utils/getJournalEntry";
 import { useState, useEffect } from "react"
 import { getTopTwoDrivers } from "./utils/getTopTwoDrivers";
-import { getTodayDateString } from "./utils/getTodayDateString";
 import RecentDaysOverview from "./components/RecentDaysOverview";
+import { Link } from "next-view-transitions";
+import { useJournal } from "./contexts/JournalContext";
+import { getJournalEntry } from "./utils/getJournalEntry";
+import { processDataForInsights } from "./utils/stats";
 
 export default function Home() {
-  const [data, setData] = useState(null)
-  const [loading, setLoading] = useState(true);
+  const { data, hasLoggedToday, todayData, dayLengthText, loading } = useJournal();
+  const [insightsData, setInsightsData] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const entries = await getJournalEntry(7);
-      setData(entries);
-      setLoading(false);
-    };
+    async function fetchData() {
+      const days = await getJournalEntry();
+
+      if (days.length > 0) {
+        const insights = processDataForInsights(days);
+        setInsightsData(insights);
+        console.log(insights);
+      }
+    }
     fetchData();
   }, []);
-
-  const today = getTodayDateString();
-  const todayData = data?.[0]?.date === today ? data[0] : null;
-  const loggedToday = !!todayData;
-
-  const dayLengthText = (() => {
-    if (!todayData) return "";
-    if (todayData.perceivedLength <= 20) return "today flew by quick";
-    if (todayData.perceivedLength <= 40) return "felt shorter than usual";
-    if (todayData.perceivedLength <= 60) return "average routine day";
-    if (todayData.perceivedLength <= 80) return "pretty long day";
-    if (todayData.perceivedLength <= 100) return "felt longer than usual";
-  })();
 
   return (
     <div className="pl-15 pr-15">
@@ -56,7 +47,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-        ) : loggedToday ? (
+        ) : hasLoggedToday ? (
           // logged today
           <div className="flex w-full items-end justify-between gap-4 p-4">
             <div className="flex max-w-[440px] flex-1 flex-col gap-1">
@@ -92,8 +83,43 @@ export default function Home() {
         <h2 className="text-lg font-extrabold mb-4">Recent Days Overview</h2>
         <RecentDaysOverview data={data} />
       </div>
-      <div className="mb-4 ">
-        <h2 className="text-lg font-extrabold">Weekly Insights Preview</h2>
+      <div>
+        <h2 className="text-lg font-extrabold mb-4">Weekly Insights Preview</h2>
+        <div className="mb-4 bg-cover bg-gray-100 flex flex-col items-stretch justify-end rounded-xl p-[40px]">
+          {loading ? (
+            // skeleton loader
+            <div className="mx-auto w-full gap-4 p-4">
+              <div className="flex animate-pulse space-x-4">
+                <div className="flex-1 space-y-3 py-5">
+                  <div className="w-[30%] h-2 rounded bg-gray-200"></div>
+                  <div className="space-y-3">
+                    <div className="w-[10%] h-2 rounded bg-gray-200"></div>
+                    <div className="h-2 w-[20%] rounded bg-gray-200"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="flex w-full text-center justify-center gap-4 p-4">
+              <div className="flex max-w-[440px] flex-1 flex-col gap-1">
+                <p className="text-black mb-2 tracking-light text-2xl font-bold leading-tight max-w-[440px]">
+                  This week, novelty {insightsData?.weeklyStats?.weeklyNoveltyImpact < 0 ? `subtrated ${insightsData?.weeklyStats?.weeklyNoveltyImpact.toFixed(2)}` : `added ${insightsData?.weeklyStats?.weeklyNoveltyImpact.toFixed(2)}`} to your days' perceived length.
+                </p>
+                <div>
+                  <Link
+                    href="/insights"
+                    className="inline-flex text-[#68907a] font-semibold transition-all duration-300 transform hover:scale-105"
+                  >
+                    See full insights →
+                  </Link>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className={"text-black font-extralight"}>
+          <p>Want tomorrow to feel longer? Try a new cafe on your walk!</p>
+        </div>
       </div>
     </div>
   );

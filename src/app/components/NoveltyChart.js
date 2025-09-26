@@ -60,55 +60,61 @@ function NoveltyChart({ noveltyData }) {
       </ResponsiveContainer>
       <div
         className={`
-        overflow-hidden transition-[max-height] duration-500 ease-in-out
-        ${hoveredIndex !== null ? 'max-h-[300px]' : 'max-h-0'}
+        overflow-hidden transition-all duration-500 ease-in-out
+        ${hoveredIndex !== null 
+          ? 'max-h-[400px] opacity-100 mt-4' 
+          : 'max-h-0 opacity-0 mt-0'
+        }
       `}
       >
-        <div className="mt-4 p-6 rounded-lg bg-gray-50 border border-gray-100 shadow-sm">
-          <div className="grid grid-cols-2 gap-4"></div>
-          {hoveredIndex !== null && (
-            <div className="mt-4 p-6 rounded-lg bg-gray-50 border border-gray-100 shadow-sm">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-3">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-gray-500">Date:</span>
-                    <span className="font-medium">{sortedData[hoveredIndex]?.date}</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-gray-500">Perceived Length:</span>
-                    <span className="font-medium">{sortedData[hoveredIndex]?.perceivedLength}</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-gray-500">Unique Places Visited:</span>
-                    <span className="font-medium">{sortedData[hoveredIndex]?.uniquePlaces}</span>
-                  </div>
+        <div className="p-6 rounded-lg bg-gray-50 border border-gray-100 shadow-sm">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-3">
+                <div className="flex items-center space-x-2">
+                  <span className="text-gray-500">Date:</span>
+                  <span className="font-medium">{sortedData[hoveredIndex]?.date}</span>
                 </div>
-                <div className="space-y-3">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-gray-500">New People Encountered:</span>
-                    <span className="font-medium">{sortedData[hoveredIndex]?.newPeople}</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-gray-500">Photo Bursts:</span>
-                    <span className="font-medium">{sortedData[hoveredIndex]?.photoBursts}</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-gray-500">Task Switches:</span>
-                    <span className="font-medium">{sortedData[hoveredIndex]?.taskSwitches}</span>
-                  </div>
+                <div className="flex items-center space-x-2">
+                  <span className="text-gray-500">Perceived Length:</span>
+                  <span className="font-medium">{sortedData[hoveredIndex]?.perceivedLength}</span>
                 </div>
-                <div className="col-span-2 mt-2 pt-3 border-t border-gray-200">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-gray-500">Mood:</span>
-                    <span className="font-medium">{sortedData[hoveredIndex]?.emotionMood}</span>
-                  </div>
+                <div className="flex items-center space-x-2">
+                  <span className="text-gray-500">Unique Places Visited:</span>
+                  <span className="font-medium">{sortedData[hoveredIndex]?.uniquePlaces}</span>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <div className="flex items-center space-x-2">
+                  <span className="text-gray-500">New People Encountered:</span>
+                  <span className="font-medium">{sortedData[hoveredIndex]?.newPeople}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="text-gray-500">Photo Bursts:</span>
+                  <span className="font-medium">{sortedData[hoveredIndex]?.photoBursts}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="text-gray-500">Task Switches:</span>
+                  <span className="font-medium">{sortedData[hoveredIndex]?.taskSwitches}</span>
                 </div>
               </div>
             </div>
-          )}
+            <div className="grid grid-cols-2 gap-4 mt-4 pt-3 border-t border-gray-200">
+              <div className="space-y-3">
+                <div className="flex items-center space-x-2">
+                  <span className="text-gray-500">Mood:</span>
+                  <span className="font-medium">{sortedData[hoveredIndex]?.emotionMood}</span>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <div className="flex items-center space-x-2">
+                  <span className="text-gray-500">Novelty:</span>
+                  <span className="font-medium">{sortedData[hoveredIndex]?.novelty}</span>
+                </div>
+              </div>
+          </div>
         </div>
       </div>
-    </div >
+    </div>
   );
 }
 

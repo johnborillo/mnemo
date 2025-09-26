@@ -3,6 +3,7 @@ import './globals.css';
 import FlowbiteSetup from './components/FlowbiteSetup';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { ViewTransitions } from 'next-view-transitions';
+import { JournalProvider } from './contexts/JournalContext';
 
 export const viewport = {
   title: 'My Next.js PWA',
@@ -23,7 +24,9 @@ export default function RootLayout({ children }) {
           <Navbar />
           <div className='container m-10'>
             <TooltipProvider>
-              {children}
+              <JournalProvider>
+                {children}
+              </JournalProvider>
             </TooltipProvider>
           </div>
           <FlowbiteSetup />

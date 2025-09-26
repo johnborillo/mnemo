@@ -15,6 +15,7 @@ import {
 
 export default function Insights() {
   const [insightsData, setInsightsData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
@@ -23,13 +24,19 @@ export default function Insights() {
       if (days.length > 0) {
         const insights = processDataForInsights(days);
         setInsightsData(insights);
+        setLoading(false);
       }
+      setLoading(false)
     }
     fetchData();
   }, []);
 
-  if (!insightsData) {
+  if (loading) {
     return <div className="p-4">Loading insights...</div>;
+  }
+
+  if (!loading && !insightsData) {
+    return <div className="p-4">Start adding enteries to start seeing insights!</div>;
   }
 
   const { enriched, weeklyStats } = insightsData;

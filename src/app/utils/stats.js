@@ -90,6 +90,23 @@ export function processDataForInsights(days) {
     switches: z(last7.reduce((a, d) => a + d.taskSwitches, 0) / (last7.length || 1), stats.switches.mean, stats.switches.std),
   };
 
+  function computeNoveltyImpact(last7, stats) {
+    const novelties = last7.map(d => d.novelty);
+    const lengths = last7.map(d => d.perceivedLength);
+
+    const corrVal = correlation(novelties, lengths);
+
+    // get std deviations
+    const noveltyStats = computeStats(last7, "novelty");
+    const lengthStats = computeStats(last7, "perceivedLength");
+
+    const slope = corrVal * (lengthStats.std / noveltyStats.std);
+    const noveltyImpact = slope * noveltyStats.mean;
+
+    return noveltyImpact; // in perceivedLength units
+  }
+
+
   const sortedDrivers = Object.entries(driverScores)
     .sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]))
     .slice(0, 2);
@@ -99,7 +116,8 @@ export function processDataForInsights(days) {
     weeklyStats: {
       avgLength,
       correlation: corr,
-      sortedDrivers
+      sortedDrivers,
+      weeklyNoveltyImpact: computeNoveltyImpact(last7)
     }
   };
 }
