@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
       <html lang="en">
         <body>
           <Navbar />
-          <div className='container m-10'>
+          <div className='m-10'>
             <TooltipProvider>
               <JournalProvider>
                 {children}

@@ -60,7 +60,7 @@ export default function JournalEntryForm({ isFirstEntry = false, onEntryComplete
   const submitHandler = isFirstEntry ? handleFirstEntrySubmit : handleSubmit;
 
   return (
-    <div className="flex-col justify-center pl-15 pr-15">
+    <div className={isFirstEntry ? "flex-col justify-center pl-15 pr-15 max-h-[50vh] overflow-auto" : "flex-col justify-center pl-15 pr-15"}>
       {hasLoggedToday ? (
         <div className="flex flex-col text-center justify-center gap-4">
           <h1 className="text-center text-lg font-semibold">Your entry for today is complete.</h1>

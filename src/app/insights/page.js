@@ -79,12 +79,7 @@ export default function Insights() {
         </p>
       </div>
 
-
-      {/* Chart */}
-      <div className="bg-white border rounded-xl p-4 shadow">
-        <h2 className="text-lg font-semibold mb-2">Novelty vs Perceived Length</h2>
-        <NoveltyChart noveltyData={enriched} />
-      </div>
+      <NoveltyChart noveltyData={enriched} />
 
       {/* Breakdown */}
       <div className="bg-green-50 border border-green-200 rounded-xl p-4 shadow">
