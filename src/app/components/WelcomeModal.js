@@ -49,7 +49,7 @@ const WelcomeModal = ({ isOpen, onComplete }) => {
         style={{ backgroundImage: 'url("/images/background2.png")' }}
       />
       <div>
-        <DialogTitle className="text-2xl mb-2">Welcome to mnemo</DialogTitle>
+        <DialogTitle className="text-2xl mb-2">Welcome to mnemo ("nee-mo")</DialogTitle>
         <p className="text-gray-600 mb-6">
           Not all days feel the same. mnemo helps you see what stretches yours.
         </p>
@@ -88,9 +88,11 @@ const WelcomeModal = ({ isOpen, onComplete }) => {
     <div className="space-y-6 text-center">
       <DialogTitle className="text-xl">How mnemo Helps</DialogTitle>
       <p className="text-gray-600 text-sm">
-        Each day, you log how your day felt and what made it unique. mnemo calculates a
-        novelty score, compares it with your sense of time, and visualizes patterns. Over
-        time, you’ll see what makes your days feel richer or longer.
+        The word <em>mnemo</em> comes from the Ancient Greek word <em>mnēmē</em>, meaning “memory” or “remembrance.”
+        Each day, you’ll reflect on how your day felt and what made it stand out. mnemo then
+        calculates a novelty score, aligns it with your perception of time, and highlights
+        emerging patterns. Over time, you’ll discover what makes your days feel fuller,
+        slower, or more <strong>memorable</strong>.
       </p>
       <ButtonGroup nextLabel="Continue" onNext={nextStep} />
     </div>
@@ -138,11 +140,10 @@ const WelcomeModal = ({ isOpen, onComplete }) => {
           <button
             onClick={handlePrivacyAccept}
             disabled={!privacyAccepted}
-            className={`px-6 py-2 rounded-2xl shadow-lg transition-all duration-300 transform hover:scale-105 ${
-              privacyAccepted
-                ? 'bg-[#4B6858] text-white hover:bg-[#3d5547]'
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-            }`}
+            className={`px-6 py-2 rounded-2xl shadow-lg transition-all duration-300 transform hover:scale-105 ${privacyAccepted
+              ? 'bg-[#4B6858] text-white hover:bg-[#3d5547]'
+              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              }`}
           >
             Accept
           </button>
@@ -156,8 +157,8 @@ const WelcomeModal = ({ isOpen, onComplete }) => {
     <div className="space-y-4">
       <DialogTitle className="text-xl mb-2">Welcome to Your Journal Journey</DialogTitle>
       <p className="text-gray-600 text-sm">
-        Let’s capture your first reflection. This will help establish your baseline for
-        tracking how your days feel over time.
+        Let's start with your first reflection. On a scale of 0 to 100 (where 100 feels very long and 0 very short),
+        how long did today feel? This will help us establish your baseline for tracking how your days feel over time.
       </p>
       <div className="bg-gray-50 rounded-lg p-4">
         <JournalEntryForm isFirstEntry={true} onEntryComplete={handleFirstEntryComplete} />
@@ -174,7 +175,7 @@ const WelcomeModal = ({ isOpen, onComplete }) => {
   );
 
   return (
-    <Dialog open={isOpen} onOpenChange={() => {}}>
+    <Dialog open={isOpen} onOpenChange={() => { }}>
       <DialogContent className="max-w-2xl max-h-[100vh] overflow-hidden">
         <DialogHeader>
           {currentStep === 1 && renderStep1()}

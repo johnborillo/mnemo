@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useCallback, useEffect } from 'react'
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts'
 
-function NoveltyChart ({ noveltyData }) {
+function NoveltyChart({ noveltyData }) {
 	const [isFirstRender, setIsFirstRender] = useState(true)
 	const [hoveredIndex, setHoveredIndex] = useState(null)
 
@@ -65,9 +65,9 @@ function NoveltyChart ({ noveltyData }) {
 				className={`
         overflow-hidden transition-all duration-500 ease-in-out
         ${hoveredIndex !== null
-			? 'max-h-[400px] opacity-100 mt-4'
-			: 'max-h-0 opacity-0 mt-0'
-		}
+						? 'max-h-[400px] opacity-100 mt-4'
+						: 'max-h-0 opacity-0 mt-0'
+					}
       `}
 			>
 				<div className="p-6 rounded-lg bg-gray-50 border border-gray-100 shadow-sm">

@@ -16,7 +16,7 @@ function RenderDays({ item }) {
     <div className="mb-3">
       <div className="flex">
         <LuCalendarCheck className="mr-4" />
-        <p>{getDayOfWeek(item?.date)}</p>
+        <p>{getDayOfWeek(item?.date)} ({item?.date})</p>
       </div>
       <div className="flex">
         <div

@@ -14,6 +14,7 @@ import {
   DialogClose
 } from "@/components/ui/dialog"
 import { Link } from "next-view-transitions";
+import { useState, useEffect } from "react";
 
 export default function JournalEntryForm({ isFirstEntry = false, onEntryComplete }) {
   const {
@@ -28,6 +29,18 @@ export default function JournalEntryForm({ isFirstEntry = false, onEntryComplete
     handleSubmit,
     clearForm
   } = useJournal();
+
+  const [formError, setFormError] = useState(false)
+
+  useEffect(() => {
+    if (perceivedLength > 100 || perceivedLength < 0 || perceivedLength === '') {
+      setFormError(true)
+    } else {
+      setFormError(false)
+    }
+  }, [perceivedLength])
+
+  console.log(perceivedLength);
 
   const handleFirstEntrySubmit = async (e) => {
     const today = getTodayDateString();
@@ -59,6 +72,14 @@ export default function JournalEntryForm({ isFirstEntry = false, onEntryComplete
 
   const submitHandler = isFirstEntry ? handleFirstEntrySubmit : handleSubmit;
 
+  function increment() {
+    if (perceivedLength < 100) setPerceivedLength(Number(perceivedLength) + 1)
+  }
+
+  function decrement() {
+    if (perceivedLength > 0) setPerceivedLength(Number(perceivedLength) - 1)
+  }
+
   return (
     <div className={isFirstEntry ? "flex-col justify-center pl-15 pr-15 max-h-[50vh] overflow-auto" : "flex-col justify-center pl-15 pr-15"}>
       {hasLoggedToday ? (
@@ -83,18 +104,37 @@ export default function JournalEntryForm({ isFirstEntry = false, onEntryComplete
               tooltipContent="Your gut sense of how long the day felt, from very short (0) to very long (100). This is the main measure we compare against your novelty signals."
             />
           </div>
-          <div className="flex items-center gap-3">
-            <label htmlFor="default-range" className="block mb-2 font-medium text-gray-900 dark:text-white">
+          <div className="flex flex-col items-center gap-4">
+            <label htmlFor="default-range" className="block font-medium text-gray-900 dark:text-white">
               Perceived Day Length
             </label>
-            <input
-              type="range"
-              value={perceivedLength}
-              onChange={(e) => setPerceivedLength(e.target.value)}
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 accent-[#4B6858]"
-              id="default-range"
-            />
-            <p className="text-center">{sliderLabel}</p>
+            {/* For desktop/tablet */}
+            <div className="hidden sm:block">
+              <div className="flex flex-row items-center gap-3">
+                <p>0</p>
+                <input
+                  type="range"
+                  value={perceivedLength}
+                  onChange={(e) => setPerceivedLength(e.target.value)}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 accent-[#4B6858]"
+                  id="default-range"
+                />
+                <p>100</p>
+              </div>
+            </div>
+            {/* Mobile: Show buttons on screens below 640px */}
+            <div className="sm:hidden flex justify-center gap-2 text-lg items-center">
+              <button className="outline-1 outline-gray-400 rounded-md p-2" onClick={() => increment()}>+</button>
+              <input className="w-10 text-center"
+                type="number"
+                value={perceivedLength}
+                onChange={(e) => setPerceivedLength(e.target.value)}
+                min={0}
+                max={100}
+              />
+              <button className="outline-1 outline-gray-400 rounded-md p-2" onClick={() => decrement()}>-</button>
+            </div>
+            <p className={!formError ? "text-center" : "text-center text-red-600"}><em>{!formError ? sliderLabel : "Please Set Perceived Length between 0 and 100"}</em></p>
           </div>
 
           <div className="mt-6">
@@ -209,20 +249,19 @@ export default function JournalEntryForm({ isFirstEntry = false, onEntryComplete
           </div>
 
           <div className="mt-6">
-            <h2 className="text-lg font-semibold mb-4">Summary</h2>
-            <p>Today's perceived length felt: {sliderLabel.toLowerCase()}</p>
-            <p>
-              I visited {uniquePlaces} unique places, encountered {newPeople} new people or topics,
-              took {photoBursts} photo bursts, switched tasks approximately {taskSwitches} times,
-              and rated my emotional mood as {emotionMood} out of 5.
-            </p>
             <div className="flex gap-4">
               <Dialog>
-                <DialogTrigger>
-                  <p className="mt-2 px-4 py-2 bg-[#78A78D] text-white rounded-lg hover:bg-[#2a8e55] duration-300">
+                {!formError ? (
+                  <DialogTrigger>
+                    <p className="mt-2 px-4 py-2 bg-[#78A78D] text-white rounded-lg hover:bg-[#2a8e55] duration-300">
+                      Save Entry
+                    </p>
+                  </DialogTrigger>
+                ) : (
+                  <p className="mt-2 px-4 py-2 bg-[#afafaf] text-white rounded-lg cursor-not-allowed">
                     Save Entry
                   </p>
-                </DialogTrigger>
+                )}
                 <DialogContent>
                   <DialogHeader>
                     <DialogTitle>
@@ -233,6 +272,16 @@ export default function JournalEntryForm({ isFirstEntry = false, onEntryComplete
                         {isFirstEntry
                           ? "Great job on your first entry! This will be saved to start tracking your daily experiences."
                           : "Are you sure you want to save this journal entry? Once saved, it will be added to your log and cannot be edited."}
+                      </p><br />
+                      <p>
+                        <h2 className="text-sm">Summary:</h2>
+                        <em><p>Today's perceived length: {sliderLabel.toLowerCase()}</p>
+                          <p>
+                            I visited {uniquePlaces} unique places, encountered {newPeople} new people,
+                            took {photoBursts} photo bursts, switched tasks approximately {taskSwitches} times,
+                            and rated my emotional mood as {emotionMood} out of 5.
+                          </p>
+                        </em>
                       </p>
                       <div className="flex justify-end gap-4 mt-4">
                         <button
