@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useCallback, useEffect } from 'react'
-import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts'
+import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Legend } from 'recharts'
 
 function NoveltyChart({ noveltyData }) {
 	const [isFirstRender, setIsFirstRender] = useState(true)
@@ -32,9 +32,11 @@ function NoveltyChart({ noveltyData }) {
 		.filter(item => new Date(item.date) >= sevenDaysAgo)
 		.sort((a, b) => new Date(a.date) - new Date(b.date))
 
+	console.log(sortedData);
+
 	return (
 		<div className="w-full max-w-4xl bg-white rounded-2xl shadow p-6">
-			<h2 className="text-lg font-bold mb-4">Novelty Over Time</h2>
+			<h2 className="text-lg font-bold mb-4">Novelty Over The Past 7 Days</h2>
 			<div style={{ width: '100%', height: 400 }}>
 				<ResponsiveContainer>
 					<LineChart
@@ -44,20 +46,35 @@ function NoveltyChart({ noveltyData }) {
 					>
 						<CartesianGrid strokeDasharray="3 3" className="stroke-gray-200" />
 						<XAxis dataKey="date" className="text-xs" />
-						<YAxis />
+						<YAxis yAxisId="left" dataKey="novelty" orientation="left" className="text-xs" />
+						<YAxis yAxisId="right" dataKey="perceivedLength" orientation="right" className="text-xs" />
 						<Tooltip
 							active={true}
 							isAnimationActive={!isFirstRender}
 						/>
 						<Line
+							yAxisId="left"
 							type="monotone"
 							dataKey="novelty"
+							name="Novelty"
 							stroke="#4B6858"
 							strokeWidth={2}
 							dot={{ r: 4 }}
 							activeDot={{ r: 8 }}
 							isAnimationActive={isFirstRender}
 						/>
+						<Line
+							yAxisId="right"
+							type="monotone"
+							dataKey="perceivedLength"
+							name="Percevied Length"
+							stroke="#4F86C6"
+							strokeWidth={2}
+							dot={{ r: 4 }}
+							activeDot={{ r: 8 }}
+							isAnimationActive={isFirstRender}
+						/>
+						<Legend align='right' />
 					</LineChart>
 				</ResponsiveContainer>
 			</div>
