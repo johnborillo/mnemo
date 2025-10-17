@@ -6,7 +6,7 @@ import { ViewTransitions } from 'next-view-transitions';
 import { JournalProvider } from './contexts/JournalContext';
 
 export const viewport = {
-  title: 'My Next.js PWA',
+  title: 'mnemo',
   description: 'A sample PWA with App Router in JavaScript',
   themeColor: '#0070f3',
   manifest: '/manifest.json',
